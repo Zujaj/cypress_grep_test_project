@@ -1,6 +1,5 @@
 name: Smoke Testing
 on: [deployment_status]
-# on: [pull_request]
 jobs:
   pr-tests:
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
@@ -20,7 +19,7 @@ jobs:
           # run only the tests tagged smoke
           env: grepTags=smoke
           run: |
-            echo "$CYPRESS_BASE_URL"
+            echo "${{ CYPRESS_BASE_URL }}"
         # environment variables while running Cypress
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
