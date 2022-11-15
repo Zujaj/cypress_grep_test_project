@@ -15,15 +15,14 @@ jobs:
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v4
         with:
-          start: npm run start:ci
+          start: npx cypress run
           # quote the url to be safe against YML parsing surprises
-          # wait-on: "http://localhost:8888"
           # run only the tests tagged smoke
-          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           env: grepTags=smoke
           run: |
             echo "$CYPRESS_BASE_URL"
         # environment variables while running Cypress
         env:
+          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
