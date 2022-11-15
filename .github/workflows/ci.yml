@@ -1,0 +1,29 @@
+name: Smoke Testing
+on: [deployment_status]
+# on: [pull_request]
+jobs:
+  pr-tests:
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      # run tests tagged "smoke"
+      # https://github.com/bahmutov/cypress-grep
+      - name: Runs Smoke Tests 💨
+        # https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v4
+        with:
+          start: npm run start:ci
+          # quote the url to be safe against YML parsing surprises
+          # wait-on: "http://localhost:8888"
+          # run only the tests tagged smoke
+          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          env: grepTags=smoke
+          run: |
+            echo "$CYPRESS_BASE_URL"
+        # environment variables while running Cypress
+        env:
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
