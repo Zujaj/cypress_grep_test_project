@@ -10,7 +10,7 @@ jobs:
 
       # display the vercel preview link
       # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#environment-files
-      - name: Stores The "vercel_preview_link" value 🔒
+      - name: Display The Vercel Preview Link 🖨
         run: |
           echo "vercel_preview_link=${{github.event.deployment_status.target_url}}" >> $GITHUB_ENV
           echo "${{env.vercel_preview_link}}"
