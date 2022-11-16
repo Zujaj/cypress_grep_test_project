@@ -18,16 +18,10 @@ jobs:
           # quote the url to be safe against YML parsing surprises
           # run only the tests tagged smoke
           env: grepTags=smoke
+          run: |
+            echo "Vercel Preview Link : ${{github.event.deployment_status.target_url}}"
         # environment variables while running Cypress
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           # pass GitHub token to allow accurately detecting a build vs a re-run build
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Sets the vercel_preview_link value
-        run: |
-          echo "vercel_preview_link=${{github.event.deployment_status.target_url}}" >> $GITHUB_ENV
-
-      - name: Prints the vercel_preview_link value
-        run: |
-          echo "env.vercel_preview_link"
