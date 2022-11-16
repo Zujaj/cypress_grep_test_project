@@ -13,9 +13,6 @@ jobs:
       - name: Stores The "vercel_preview_link" value 🔒
         run: |
           echo "vercel_preview_link=${{github.event.deployment_status.target_url}}" >> $GITHUB_ENV
-
-      - name: Prints The "vercel_preview_link" value 🖨
-        run: |
           echo "${{env.vercel_preview_link}}"
 
       # run tests tagged "smoke"
