@@ -8,6 +8,16 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
+      # display the vercel preview link
+      # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#environment-files
+      - name: Stores The "vercel_preview_link" value 🔒
+        run: |
+          echo "vercel_preview_link=${{github.event.deployment_status.target_url}}" >> $GITHUB_ENV
+
+      - name: Prints The "vercel_preview_link" value 🖨
+        run: |
+          echo "${{env.vercel_preview_link}}"
+
       # run tests tagged "smoke"
       # https://github.com/bahmutov/cypress-grep
       - name: Runs Smoke Tests 💨
@@ -18,9 +28,6 @@ jobs:
           # quote the url to be safe against YML parsing surprises
           # run only the tests tagged smoke
           env: grepTags=smoke
-          run: |
-            echo "VERCEL_PREVIEW_LINK = ${{github.event.deployment_status.target_url}}" >> $GITHUB_ENV
-            echo "env.VERCEL_PREVIEW_LINK"
         # environment variables while running Cypress
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
